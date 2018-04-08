@@ -1,4 +1,4 @@
-正确顺序应该是先建立远程库然后从远程库克隆
+正确顺序应该是先建立远程库然后从远程库克隆.
 git clone git@github.com:michaelliao/gitskills.git 克隆远程库
 
 1. git add readme.txt	
