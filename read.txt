@@ -1,2 +1,52 @@
-Git is a version control system.
-Git is free software
+正确顺序应该是先建立远程库然后从远程库克隆
+git clone git@github.com:michaelliao/gitskills.git 克隆远程库
+
+1. git add readme.txt	
+   添加文件到暂存区（stage)
+2. git commit -m "wrote a readme file"	
+   一次性把暂存区的所有修改提交到分支
+3. git status	
+   告诉当前文件的状态，是否修改是否提交
+4. git diff readme.txt	
+   详细描述当前txt文件的修改内容，删除了哪些，增加了哪些
+   git diff HEAD -- readme.txt	
+   可以查看工作区和版本库里面最新版本的区别
+5. git log	
+   显示从最近到最远的提交日志，一串数字是版本号（前几位即可）
+6. git log --pretty=oneline	
+   整理显示的日志，使提交日志输出整齐点
+7. git reset --hard HEAD^	
+   回退到上一个版本（实际只是HEAD指针移动）
+8. git reflog	
+   查看历史提交版本号
+9. git checkout -- readme.txt	
+   丢弃工作区的修改，回退到修改前的版本。这个是回到当前区（比如已经提交到缓存区）的上一个版本。
+10.git reset HEAD readme.txt	
+   可以把暂存区的修改撤销掉（unstage），重新放回工作区。当我们用HEAD时，表示最新的版本。就是可以从暂存区回退到工作区。
+11.git rm test.txt	
+   当你在命令行用rm删除文件后，还需要这样在git中删除文件，需要commit
+12.git checkout -- test.txt	
+   如果命令行是误删的话，就可以利用这个命令从版本库中找到文件。
+
+关联远程库origin，新机需要添加SSH key，见廖教程。
+13.git remote add origin git@github.com:lanpzzzz/Flask.git   
+   将本地仓库关联远程仓库。
+14.git push -u origin master   
+   将本地库中当前master分支的所有内容推送到origin远程库中，实际上是把当前分支master推送到远程。-u是首次需要，后续可以简化。
+
+创建标签：就是给commit不同的版本取名，方便处理。
+1.git tag v1.0   
+  给当前分支上最新提交打上一个标签。
+2.git tag v0.9 6224937   
+  给commit id为6224937打上标签，先查找到号码，再利用这个语句就可以给对应的提交打上标签。
+3.git tag -a v0.1 -m "version 0.1 released" 3628164   
+  用-a指定标签名，-m指定说明文字
+4.git show v0.1   
+  展示标签所以信息
+5.git tag -d v0.1   
+  删除标签
+6.git push origin v1.0   
+  推送某个标签到远程
+7.git push origin --tags   
+  一次性推送全部尚未推送到远程的本地标签
+8.如果标签已经推送到远程   删除见教程
