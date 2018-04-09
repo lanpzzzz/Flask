@@ -6,7 +6,7 @@ git clone git@github.com:michaelliao/gitskills.git 克隆远程库
 2. git commit -m "wrote a readme file"	
    一次性把暂存区的所有修改提交到分支
 3. git status	
-   告诉当前文件的状态，是否修改是否提交
+   查看工作区，告诉当前文件的状态，是否修改是否提交
 4. git diff readme.txt	
    详细描述当前txt文件的修改内容，删除了哪些，增加了哪些
    git diff HEAD -- readme.txt	
@@ -33,6 +33,21 @@ git clone git@github.com:michaelliao/gitskills.git 克隆远程库
    将本地仓库关联远程仓库。
 14.git push -u origin master   
    将本地库中当前master分支的所有内容推送到origin远程库中，实际上是把当前分支master推送到远程。-u是首次需要，后续可以简化。
+
+分支：
+Git鼓励大量使用分支：
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+用--no--ff方式合并分支到当前分支：git merge --no-ff -m "merge with no-ff" <name>    // -m是加备注信息
+删除分支：git branch -d <name>
+保存当前工作区到stash：git stash
+查看stash中状态：git stash list
+恢复stash中内容并且不删除stash中内容：git stash apply
+恢复stash中内容并且删除：git stash pop
+
 
 创建标签：就是给commit不同的版本取名，方便处理。
 1.git tag v1.0   
