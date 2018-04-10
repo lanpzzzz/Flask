@@ -1,9 +1,12 @@
 from flask import Flask
+from flask import request
+
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return '<h1>hello</h1>'
+	user_agent = request.headers.get('User-Agent')
+	return '<h1>Your browers is %s</h1>' % user_agent
 
 if __name__=='__main__':
     app.run(debug=True)
