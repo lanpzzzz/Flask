@@ -1,0 +1,4 @@
+<p>段落  
+<a>链接  <a href="http://www.baidu.com>This is a link!</a>  //href也是属性
+<img>图像  <img src="***.jpg" width="104" height="142">  //属性放在开始标签中，以名称/值对的形式出现，值加引号
+<br/>换行  br没有关闭标签，所以加一个/表示关闭
