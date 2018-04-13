@@ -11,7 +11,7 @@ class 属性大多数时候用于指向样式表中的类（class）。在base.h
 			折叠起来的导航栏实际上是一个带有 class .navbar-toggle 及两个 data- 元素的按钮。
 			第一个是 data-toggle，用于告诉 JavaScript 需要对按钮做什么，对按钮进行折叠切换（展开、合上）。
 			第二个是 data-target，指示要切换到哪一个元素。指向切换到Home的元素
-			三个带有 class .icon-bar 的 <span> 创建所谓的汉堡按钮。这些会切换为 .nav-collapse <div> 中的元素。
+			三个带有 class  .icon-bar 的 <span> 创建所谓的汉堡按钮。这些会切换为 .nav-collapse <div> 中的元素。
 			<button type="button" class="bar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
