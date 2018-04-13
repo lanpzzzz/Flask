@@ -1,0 +1,18 @@
+CSS层叠样式表：定义如何显示HTML元素，外部样式表通常存储在CSS文件中。
+一般而言，所有的样式会根据下面的规则层叠于一个新的虚拟样式表中，其中数字 4 拥有最高的优先权。
+1、浏览器缺省设置
+2、外部样式表
+3、内部样式表（位于 <head> 标签内部）
+4、内联样式（在 HTML 元素内部）
+
+CSS规则：由两个主要的部分构成：选择器，以及一条或多条声明。
+selector {declaration1; declaration2; ... declarationN }    //selector是选择要格式的元素，后面的声明是定义的格式，每一个声明declaration1由一组键值对组成
+h1 {color:red; font-size:14px;}
+
+链接一个外部样式表：
+<head>
+<link rel="stylesheet" type="text/css" href="theme.css" />
+</head>
+
+<link> 标签定义文档与外部资源的关系，常用于链接样式表。link 元素是空元素，它仅包含属性。此元素只能存在于 head 部分，不过它可出现任何次数。
+http://www.w3school.com.cn/tags/tag_link.asp   可查看link中的属性。
