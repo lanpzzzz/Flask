@@ -1,0 +1,21 @@
+class 属性规定元素的类名（classname）。
+class 属性大多数时候用于指向样式表中的类（class）。在base.html中有定义样式表的类，这里只需要引用就好了。
+
+导航栏定义：
+<div class="navbar navbar-inverse" role="navigation">   //navbar navbar-inverse:创建一个带有黑色背景白色文本的反色的导航栏; role="navigation"，有助于增加可访问性
+	<div class="container">    //container是为了初始化bootstrap的子系统，很多css都依赖于它
+		
+    <div class="navbar-header">    //navbar-header类不仅会使头部的文字看起来大一些，而且也是导航栏的头部，当小屏幕上时是唯一能够显示的导航栏内容之一。
+			<a class="navbar-brand" href="/">Flask</a>
+		</div>
+    
+    为了给导航栏添加响应式特性，要折叠的内容必须包裹在带有 class .collapse、.navbar-collapse 的 <div> 中。
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+			</ul>
+		</div>
+    
+	</div>
+</div>
+
