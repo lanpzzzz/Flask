@@ -1,0 +1,27 @@
+<form>元素定义HTML表单，用于收集用户输入信息。 
+<form action="action_page.php" method="GET">    
+  action 属性定义在提交表单时执行的动作。向服务器提交表单的通常做法是使用提交按钮。通常，表单会被提交到 web 服务器上的网页。
+         在上面的例子中，指定了某个服务器脚本来处理被提交表单，如果省略 action 属性，则 action 会被设置为当前页面。
+  method 属性规定在提交表单时所用的 HTTP 方法（GET 或 POST）
+  
+HTML 表单包含表单元素。表单元素指的是不同类型的 input 元素、复选框、单选按钮、提交按钮等等。
+<input> 元素是最重要的表单元素。每个输入字段必须设置一个 name 属性。根据type类型选择不同的表单元素。有以下几种类型。
+  text	定义常规文本输入。
+  radio	定义单选按钮输入（选择多个选择之一）
+  submit	定义提交按钮（提交表单）  //点击提交按钮之后向服务器发送你填入的表单中的信息。
+  password 定义密码字段
+  checkbox 定义复选框
+  ....
+<select> 元素定义下拉列表：
+  <select name="cars">
+  <option value="volvo">Volvo</option>   //<option> 元素定义待选择的选项。列表通常会把首个选项作为默认值
+  <option value="saab">Saab</option>
+  <option value="fiat" selected>Fiat</option>     //selected属性用来预选择某个选项作为默认值
+  <option value="audi">Audi</option>
+  </select>
+<textarea> 元素：定义多行输入字段（文本域），就像是在线填写简历时的项目经历部分，会出现一个文本框让你进行填写。
+<button> 元素定义可点击的按钮
+  <button type="button" onclick="alert('Hello World!')">Click Me!</button>    //点击后弹出提示框，中显示内容Hello World!
+  
+<fieldset> 元素组合表单中的相关数据
+<legend> 元素为 <fieldset> 元素定义标题
