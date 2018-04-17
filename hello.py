@@ -1,4 +1,4 @@
-from flask import Flask,render_template,redirect,url_for,session
+from flask import Flask,render_template,redirect,url_for,session,flash
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from datetime import datetime
@@ -21,6 +21,9 @@ class NameForm(FlaskForm):
 def user():
 	form = NameForm()
 	if form.validate_on_submit():
+		old_name =  session.get('name')
+		if old_name is not None and old_name != form.name.data:
+			flash('Looks like you have changed your name!')
 		session['name'] = form.name.data
 		return redirect(url_for('user'))
 	return render_template('user.html',form=form,name=session.get('name'),current_time=datetime.utcnow())
