@@ -38,3 +38,14 @@ class 属性大多数时候用于指向样式表中的类（class）。在base.h
     </div>
 </div>
 {% endblock %}
+
+Bootstrap 警告（Alerts）:警告（Alerts）向用户提供了一种定义消息样式的方式。它们为典型的用户操作提供了上下文信息反馈。
+  <div class="alert alert-success">成功！很好地完成了提交。</div>
+可取消的警告（Dismissal Alerts）
+  <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert"
+  	    aria-hidden="true">
+   	&times;
+      </button>      //增加了一个关闭按钮，记属性及按钮内容为&times;
+      成功！很好地完成了提交。
+  </div>
