@@ -11,6 +11,7 @@ from wtforms import StringField,SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail,Message
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -19,11 +20,25 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SECRET_KEY'] = 'hard to guess string'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+#配置Mail使用Gmail
+app.config['MAIL_SERVER'] = 'smtp.qq.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+#在bash中配置环境变量MAIL_USERNAME和MAIL_PASSWORD，这是发件人邮箱账号和密码，要开启smtp授权
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['FLASKY_MAIL_SENDER']='Flasky Admin <532891679@qq.com>'
+#发送的邮件中显示内容的前缀
+app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
+#在bash中配置环境变量FLASKY_ADMIN为收件人邮箱地址
+app.config['FLASKY_ADMIN'] = os.environ.get('FLASKY_ADMIN')
+
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)    #加入Flask-Moment扩展，可以在浏览器中渲染时间和日期# -*- coding: UTF-8 -*-
 db = SQLAlchemy(app)
-migrate = Migrate(app,db)    #Flask中集成的轻量级包装的Alembic数据库迁移框架
+migrate = Migrate(app,db)    #Flask中集成的轻量级包装的Alembic数据库迁移框架,未实现
+mail = Mail(app)    #
 
 class User(db.Model):
 	__tablename__ = 'users'
@@ -43,9 +58,17 @@ class Role(db.Model):
 	def __repr__(self):
 		return '<Role %r>' % self.name 
 
+def send_email(to, subject, template, **kwargs):
+    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
+    #纯文本正文,为什么要用两个
+    msg.body = render_template(template + '.txt', **kwargs)
+    #富文本正文，富文本可以对选中的部分单独设置字体、字形、字号、颜色。这里对动态参数部分设置了字体
+    msg.html = render_template(template + '.html', **kwargs)
+    mail.send(msg)
 
 class NameForm(FlaskForm):
-	name=StringField('What is you name?',validators=[DataRequired()])   #参数validators中指定由验证函数组成的列表，在接收用户提交的数据前进行验证，Required()用来确保提交的字段不为空 
+	#参数validators中指定由验证函数组成的列表，在接收用户提交的数据前进行验证，Required()用来确保提交的字段不为空 
+	name=StringField('What is you name?',validators=[DataRequired()])   
 	submit=SubmitField('Submit')
 
 def make_shell_context():
@@ -63,6 +86,9 @@ def index():
 			db.session.add(user)
 			db.session.commit()
 			session['known'] = False    #添加Known关键字参数，增加界面显示内容
+			if app.config['FLASKY_ADMIN']:
+				#传入收件人地址，邮件主题（题目），渲染邮件正文的模板，关键字参数列表（这里传入动态变量user，就是每接收一个新的名字就会发送一个邮件）
+				send_email(app.config['FLASKY_ADMIN'], 'New User','mail/new_user', user=user)  
 		else:
 			session['known'] = True
 		session['name']=form.name.data
