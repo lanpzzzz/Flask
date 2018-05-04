@@ -12,6 +12,7 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail,Message
+from threading import Thread
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -58,13 +59,21 @@ class Role(db.Model):
 	def __repr__(self):
 		return '<Role %r>' % self.name 
 
+def send_async_email(app,msg):
+	#激活程序上下文
+	with app.app_context():
+		mail.send(msg)
+
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
     #纯文本正文,为什么要用两个
     msg.body = render_template(template + '.txt', **kwargs)
     #富文本正文，富文本可以对选中的部分单独设置字体、字形、字号、颜色。这里对动态参数部分设置了字体
     msg.html = render_template(template + '.html', **kwargs)
-    mail.send(msg)
+    #把send函数移到后台线程中，避免处理请求中出现不必要的延迟
+    thr = Thread(target=send_async_email,args=[app,msg])
+    thr.start()
+    return thr
 
 class NameForm(FlaskForm):
 	#参数validators中指定由验证函数组成的列表，在接收用户提交的数据前进行验证，Required()用来确保提交的字段不为空 
