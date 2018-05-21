@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 from flask import Flask, render_template, session, redirect, url_for,flash
-from flask_script import Shell
+from flask_script import Shell,Manager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from datetime import datetime
@@ -10,7 +10,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate,MigrateCommand
 from flask_mail import Mail,Message
 from threading import Thread
 
@@ -39,7 +39,9 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)    #加入Flask-Moment扩展，可以在浏览器中渲染时间和日期# -*- coding: UTF-8 -*-
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)    #Flask中集成的轻量级包装的Alembic数据库迁移框架,未实现
-mail = Mail(app)    #
+mail = Mail(app)    
+manager=Manager(app)
+manager.add_command('db',MigrateCommand)
 
 class User(db.Model):
 	__tablename__ = 'users'
@@ -82,6 +84,7 @@ class NameForm(FlaskForm):
 
 def make_shell_context():
 	return dict(db=db, User=User, Role=Role)      #为shell命令注册一个make_context回调函数，回调函数中返回shell中需要导入的数据库实例和模型
+manager.add_command("shell",Shell(make_context=make_shell_context))
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -110,4 +113,4 @@ def page_not_found(e):
 	return render_template('404.html'),404
 
 if __name__=='__main__':
-	app.run()
+	manager.run()
