@@ -6,7 +6,7 @@ from . import auth
 from .. import db
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm,ChangePasswordForm
 
 ####这句的意思，字面上理解是，在app的request响应之前，先如何如何............
 @auth.before_app_request 
@@ -84,3 +84,23 @@ def resend_confirmation():
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
 ###
+
+
+@auth.route('/change-password',methods = ['GET','POST'])
+@login_required
+def change_password():
+	form = ChangePasswordForm()
+	if form.validate_on_submit():
+		#先判断当前用户的旧密码是否正确
+		if current_user.verify_password(form.old_password.data):
+			current_user.password = form.password.data
+			db.session.add(current_user)
+			db.session.commit()
+			flash('Your password has been update')
+			return redirect(url_for('main.index'))
+		else:
+			flash('Invalid password')
+	return render_template("auth/change_password.html",form=form)
+
+
+
