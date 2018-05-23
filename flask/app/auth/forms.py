@@ -44,3 +44,14 @@ class ChangePasswordForm(FlaskForm):
     password2 = PasswordField('Confirm new password',
                               validators=[DataRequired()])
     submit = SubmitField('Update Password')
+
+#找回密码的第一个处理表单，输入要找回的账户名、邮箱名
+class PasswordResetRequestForm(FlaskForm):
+    email = StringField('Email',validators=[DataRequired(),Length(1,64),Email()])
+    submit = SubmitField('Reset Password')
+
+#进入修改密码表单
+class PasswordResetForm(FlaskForm):
+    password = PasswordField('New Password',validators=[DataRequired(),EqualTo('password2',message='Passwords must match')])
+    password2 = PasswordField('Confirm password',validators=[DataRequired()])
+    submit = SubmitField('Reset Password')
