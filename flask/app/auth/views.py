@@ -26,7 +26,7 @@ def unconfirmed():
 	#已确认的用户经过上面钩子不是已经排除了吗？怎么还会到这里的路由来
     if current_user.is_anonymous or current_user.confirmed:    #如果用户是非普通用户(is_anonymous对普通用户返回False)，或者已确认的，则返回主页
         return redirect(url_for('main.index'))
-    return render_template('auth/email/unconfirmed.html')
+    return render_template('auth/unconfirmed.html')
 ###
 
 @auth.route('/login',methods=['GET','POST'])
