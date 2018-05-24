@@ -10,10 +10,10 @@ class Config:
     #终于邮件发送成功了，错在哪里？MAIL_SERVER改为qq邮箱的服务器地址和端口
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.qq.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
-        ['true', 'on', '1']
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in ['true', 'on', '1']
     #重新配置MAIL_USERNAME和MAIL_PASSWORD粗心名字输错了.配置邮箱名和授权IMAP的授权码
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    #为什么每次都要重新设置一次密码，5/24又出现503错误
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     #FLASK_MAIL_SENDER直接照搬的代码，没有改。要改为发送邮件的邮箱
