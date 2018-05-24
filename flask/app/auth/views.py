@@ -21,6 +21,8 @@ def before_request():
         return redirect(url_for('auth.unconfirmed'))    #就返回到未确认的一个路由
 
 
+
+
 @auth.route('/unconfirmed')     #处理未确认的路由
 def unconfirmed():
 	#已确认的用户经过上面钩子不是已经排除了吗？怎么还会到这里的路由来
