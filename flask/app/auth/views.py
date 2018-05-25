@@ -11,14 +11,22 @@ from .forms import LoginForm, RegistrationForm,ChangePasswordForm,PasswordResetR
 ####这句的意思，字面上理解是，在app的request响应之前，先如何如何............
 @auth.before_app_request 
 def before_request():
-	#默认confirmed属性是False的,，只有通过邮箱验证函数之后，该属性才被改为true
-	##而且，request的网址不是以auth.和static开头的
+	#.is_authenticated当前用户是已登录的
+	#默认confirmed属性是False的,，只有通过邮箱验证函数之后，该属性才被改为true，账户未确认
+	##而且，request的网址不是以auth.和static开头的，请求端点不在auth或static，因为这些路由需要权限。
     if current_user.is_authenticated \
             and not current_user.confirmed \
             and request.endpoint \
             and request.blueprint != 'auth' \
             and request.endpoint != 'static':
         return redirect(url_for('auth.unconfirmed'))    #就返回到未确认的一个路由
+    if current_user.is_authenticated:
+        current_user.ping()   ##在每次收到用户请求时增加了调用ping方法
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.blueprint != 'auth' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
 
 
 

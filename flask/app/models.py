@@ -6,6 +6,7 @@ from . import login_manager
 from werkzeug.security import generate_password_hash,check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from datetime import datetime
 
 class Permission:
     FOLLOW = 1
@@ -85,11 +86,21 @@ class User(UserMixin,db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)   
+    name = db.Column(db.String(64))      #新增真实姓名，所在地，自我介绍，注册日期，最后访问日期
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())      #db.String和db.Text区别在于后者不需要指定最大长度
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)    #default可接受函数作为默认值，每次需要生成默认值时，就调用指定函数
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)       #这两个值的默认值都是用户注册时的时间
 
 
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+###ping方法每次用户访问网站时都会调用该方法，刷新最后使用时间
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
 ###用户注册账户时，会被赋予默认的用户角色，但是管理员在最开始就被赋予“管理员”角色，所以将管理员邮箱存入环境变量中，只要该邮箱出现在注册请求中，就被赋予正确角色
     def __init__(self, **kwargs):
