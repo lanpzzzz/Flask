@@ -5,8 +5,9 @@ from flask_login import UserMixin,AnonymousUserMixin   #为了使用flask-Login�
 from . import login_manager
 from werkzeug.security import generate_password_hash,check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
+from flask import current_app,request
 from datetime import datetime
+import hashlib
 
 class Permission:
     FOLLOW = 1
@@ -192,6 +193,14 @@ class User(UserMixin,db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+###
+
+###
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        url = 'https://secure.gravatar.com/avatar'
+        hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)
 ###
 
     def __repr__(self):
